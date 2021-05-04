@@ -13,7 +13,7 @@ def extract_filter_responses(img, filterBank):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
 
     # -----fill in your implementation here --------
-    filterResponses = []
+    # filterResponses = []
 
     # Lightness
     light = img[:,:,0]
@@ -25,10 +25,22 @@ def extract_filter_responses(img, filterBank):
     blueGreen = img[:,:,2]
 
     colorSpaces = [light, redGreen, blueGreen]
-    for colorSpace in colorSpaces:
-        for j in range(len(filterBank)):
-            dst = cv2.filter2D(colorSpace, -1, filterBank[j])
-            filterResponses.append(dst)
+    # for colorSpace in colorSpaces:
+    #     for j in range(len(filterBank)):
+    #         dst = cv2.filter2D(colorSpace, -1, filterBank[j])
+    #         filterResponses.append(dst)
+
+
+    filterResponses = np.ndarray((img.shape[0], img.shape[1], 3*len(filterBank)))
+    for filterNumber in range(len(filterBank)):
+        for colorSpaceIndex in range(len(colorSpaces)):
+            dst = cv2.filter2D(colorSpaces[colorSpaceIndex], -1, filterBank[filterNumber])    # Use the filter for each of the 3 color spaces
+
+            # There might be a better way to do this, but put every pixel into the correct location for that filterNumber
+            for x in range(img.shape[0]):
+                for y in range(img.shape[1]):
+                    filterResponses[x, y, 3*filterNumber + colorSpaceIndex]
+
     # ----------------------------------------------
 
     return filterResponses
@@ -74,35 +86,40 @@ def getDict(imgPaths, alpha, K, method):
         elif method == "Harris":
             pts = getKps(img, alpha)
         
-        
-
-    return
+    # return
 
 # start of some code for testing extract_filter_responses()
 if __name__ == "__main__":
     fb = create_filterbank()
-    img = cv2.imread("../data/bedroom/sun_aiydcpbgjhphuafw.jpg")
+    img = cv2.imread("../data/desert/sun_adpbjcrpyetqykvt.jpg")
 
     #gray = cv2.cvtColor (img, cv2.COLOR_BGR2GRAY)
     #print (extract_filter_responses (gray, fb))
+    print(img.shape)
 
-    #responses = extract_filter_responses(img, fb)
+    responses = extract_filter_responses(img, fb)
+    print(responses.shape)
 
     #randomPts = randPts(img, 5)
     #print(randomPts)
 
-    topKps = getKps(img, 5, 0.05)
-    print(topKps)
+    # topKps = getKps(img, 5, 0.05)
+    # print(topKps)
     
-    #cv2.imshow('1',responses[0])
-    #cv2.imshow('2',responses[20])
-    #cv2.imshow('3',responses[40])
+    # for i in range(len(responses)):
+    #     cv2.imshow(str(i),responses[i])
+    #     cv2.waitKey(0)
+
+    #     cv2.destroyAllWindows()
+    # cv2.imshow('1',responses[0])
+    # cv2.imshow('2',responses[20])
+    # cv2.imshow('3',responses[40])
 
     #cv2.imshow("merged", cv2.merge([responses[0], responses[20], responses[40]]))
 
-    cv2.waitKey(0)
+    # cv2.waitKey(0)
 
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
 
 
 
