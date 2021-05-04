@@ -4,7 +4,6 @@ from random import randint
 from utils import *
 from createFilterBank import create_filterbank
 
-
 def extract_filter_responses(img, filterBank):
 
     if len(img.shape) == 2:
@@ -73,7 +72,7 @@ def getKps(img, alpha, k = 0.04):
     top50 = sortedValues[:alpha]
     return top50
 
-def getDict(imgPaths, alpha, K, method):
+def get_dictionary(imgPaths, alpha, K, method):
     fb = create_filterbank()
     for fp in imgPaths:
         # For each image, get the filter responses?
