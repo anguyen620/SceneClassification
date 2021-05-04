@@ -15,8 +15,8 @@ def get_random_points(img, alpha):
 
     points = []
     for entry in range(alpha):
-        xRand = random.randint(0, img.shape[1])
-        yRand = random.randint(0, img.shape[0])
+        xRand = random.randint(0, img.shape[0] - 1)
+        yRand = random.randint(0, img.shape[1] - 1)
         points.append([xRand, yRand])
 
     # ----------------------------------------------
