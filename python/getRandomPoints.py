@@ -3,7 +3,7 @@ import cv2
 import random
 
 
-def get_random_points (img, alpha):
+def get_random_points(img, alpha):
 
     random.seed()
 
@@ -13,7 +13,11 @@ def get_random_points (img, alpha):
 
     # -----fill in your implementation here --------
 
-
+    points = []
+    for entry in range(alpha):
+        xRand = random.randint(0, img.shape[1])
+        yRand = random.randint(0, img.shape[0])
+        points.append([xRand, yRand])
 
     # ----------------------------------------------
     
