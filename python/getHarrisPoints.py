@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 
-def get_harris_points(img, alpha, k):
+def get_harris_points(img, alpha, k=0.04):
 
     if len(img.shape) == 3 and img.shape[2] == 3:
         # should be OK in standard BGR format
