@@ -34,6 +34,7 @@ def extract_filter_responses(img, filterBank):
     colorSpaces = [l,a,b]   # This gives the same results as the previous method, but less code
 
     filterResponses = np.ndarray((img.shape[0], img.shape[1], 3*len(filterBank)))
+    filterResponses = filterResponses.astype(np.uint8) 
     for filterNumber in range(len(filterBank)):
         for colorSpaceIndex in range(len(colorSpaces)):
             dst = cv2.filter2D(colorSpaces[colorSpaceIndex], -1, filterBank[filterNumber])    # Use the filter for each of the 3 color spaces
@@ -112,6 +113,7 @@ if __name__ == "__main__":
     
     for i in range(responses.shape[2]):
         filtered_image = np.zeros((img.shape[0], img.shape[1]))
+        filtered_image = filtered_image.astype(np.uint8) 
         for x in range(img.shape[0]):
             for y in range(img.shape[1]):
                 filtered_image[x,y] = responses[x,y, i]
