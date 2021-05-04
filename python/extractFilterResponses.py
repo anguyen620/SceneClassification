@@ -30,6 +30,9 @@ def extract_filter_responses(img, filterBank):
     #         filterResponses.append(dst)
 
 
+    l,a,b = cv2.split(img)
+    colorSpaces = [l,a,b]   # This gives the same results as the previous method, but less code
+
     filterResponses = np.ndarray((img.shape[0], img.shape[1], 3*len(filterBank)))
     for filterNumber in range(len(filterBank)):
         for colorSpaceIndex in range(len(colorSpaces)):
@@ -38,7 +41,7 @@ def extract_filter_responses(img, filterBank):
             # There might be a better way to do this, but put every pixel into the correct location for that filterNumber
             for x in range(img.shape[0]):
                 for y in range(img.shape[1]):
-                    filterResponses[x, y, 3*filterNumber + colorSpaceIndex]
+                    filterResponses[x, y, 3*filterNumber + colorSpaceIndex] = dst[x,y]
 
     # ----------------------------------------------
 
@@ -104,10 +107,16 @@ if __name__ == "__main__":
 
     # topKps = getKps(img, 5, 0.05)
     # print(topKps)
+
+    # print(responses[10,10])
     
-    # for i in range(len(responses)):
-    #     cv2.imshow(str(i),responses[i])
-    #     cv2.waitKey(0)
+    for i in range(responses.shape[2]):
+        filtered_image = np.zeros((img.shape[0], img.shape[1]))
+        for x in range(img.shape[0]):
+            for y in range(img.shape[1]):
+                filtered_image[x,y] = responses[x,y, i]
+        cv2.imshow(str(i),filtered_image)
+        cv2.waitKey(0)
 
     #     cv2.destroyAllWindows()
     # cv2.imshow('1',responses[0])
