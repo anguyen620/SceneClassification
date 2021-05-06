@@ -11,10 +11,17 @@ def get_visual_words (img, dictionary, filterBank):
 
     for x in range(len(img.shape[0])):
         for y in range(len(img.shape[1])):
-            distances = cdist(img[x,y], wordMap)
+            distances = cdist(img[x,y], dictionary)
             minDistance = min(distances)
+            index = np.where(distances == minDistance)
+            label = np.where(dictionary[index])
+
+            wordMap[x, y] = label
+
 
     # ----------------------------------------------
 
     return wordMap
+
+if __name__ == '__main__':
 
