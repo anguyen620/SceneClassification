@@ -12,24 +12,6 @@ def extract_filter_responses(img, filterBank):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
 
     # -----fill in your implementation here --------
-    # filterResponses = []
-
-    # Lightness
-    light = img[:,:,0]
-
-    # Red/Green
-    redGreen = img[:,:,1]
-
-    # Blue/Green
-    blueGreen = img[:,:,2]
-
-    colorSpaces = [light, redGreen, blueGreen]
-    # for colorSpace in colorSpaces:
-    #     for j in range(len(filterBank)):
-    #         dst = cv2.filter2D(colorSpace, -1, filterBank[j])
-    #         filterResponses.append(dst)
-
-
     l,a,b = cv2.split(img)
     colorSpaces = [l,a,b]   # This gives the same results as the previous method, but less code
 
@@ -48,48 +30,6 @@ def extract_filter_responses(img, filterBank):
 
     return filterResponses
 
-def randPts(img, alpha):
-    """ Get random points """
-    ret = []
-    for entry in range(alpha):
-        xRand = randint(0, img.shape[1])
-        yRand = randint(0, img.shape[0])
-        ret.append([xRand, yRand])
-    return ret
-
-def getKps(img, alpha, k = 0.04):
-    """ Get top alpha keypoints """
-    # Get keypoints
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gray = np.float32(gray)
-    kps = cv2.cornerHarris(gray, 2, 5, k)
-
-    # Make value array, which consists of [val, x, y]
-    valueArr = []
-    for row in range(kps.shape[0]):
-        for col in range(kps.shape[1]):
-            valueArr.append([kps[row][col], row, col])
-
-    # Shitty code
-    sortedValues = sorted(valueArr, key = lambda x: x[0], reverse = True) # Sort the keypoints in descending order
-    sortedValues = [elems[1:] for elems in sortedValues]
-    top50 = sortedValues[:alpha]
-    return top50
-
-def get_dictionary(imgPaths, alpha, K, method):
-    fb = create_filterbank()
-    for fp in imgPaths:
-        # For each image, get the filter responses?
-        img = cv2.imread(fp)
-        responses = extract_filter_responses(img, fb)
-
-        # Get alpha points
-        if method == "Random":
-            pts = randPts(img, alpha)
-        elif method == "Harris":
-            pts = getKps(img, alpha)
-        
-    # return
 
 # start of some code for testing extract_filter_responses()
 if __name__ == "__main__":
