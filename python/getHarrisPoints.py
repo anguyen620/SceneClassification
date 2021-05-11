@@ -31,7 +31,17 @@ def get_harris_points(img, alpha, k=0.04):
 
 
 # start of some code for testing get_harris_points()
-if __name__ == "__main__":
-    img = cv2.imread ("../data/bedroom/sun_aiydcpbgjhphuafw.jpg")
-    print (get_harris_points (img, 50, 0.04))
+if __name__ == '__main__':
+    a = 500
+
+    img = cv2.imread("../data/campus/sun_abslhphpiejdjmpz.jpg")
+    points = get_harris_points (img, a, 0.04)
+    
+    # map on image points
+    for coords in points:
+        img = cv2.circle(img, (coords[0], coords[1]), radius=2, color=(255, 0, 0), thickness=-1)
+
+    cv2.imshow(str(a)+" Harris points", img)
+    cv2.waitKey(0)
+    cv2. destroyAllWindows()
 

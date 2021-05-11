@@ -12,11 +12,12 @@ def extract_filter_responses(img, filterBank):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2Lab)
 
     # -----fill in your implementation here --------
-    l,a,b = cv2.split(img)
-    colorSpaces = [l,a,b]   # This gives the same results as the previous method, but less code
+    l,a,b = cv2.split(img)  # Split the color space
+    colorSpaces = [l,a,b]
 
     filterResponses = np.ndarray((img.shape[0], img.shape[1], 3*len(filterBank)))
     filterResponses = filterResponses.astype(np.uint8) 
+    
     for filterNumber in range(len(filterBank)):
         for colorSpaceIndex in range(len(colorSpaces)):
             dst = cv2.filter2D(colorSpaces[colorSpaceIndex], -1, filterBank[filterNumber])    # Use the filter for each of the 3 color spaces
@@ -36,21 +37,9 @@ if __name__ == "__main__":
     fb = create_filterbank()
     img = cv2.imread("../data/desert/sun_adpbjcrpyetqykvt.jpg")
 
-    #gray = cv2.cvtColor (img, cv2.COLOR_BGR2GRAY)
-    #print (extract_filter_responses (gray, fb))
-    print(img.shape)
-
     responses = extract_filter_responses(img, fb)
-    print(responses.shape)
-
-    #randomPts = randPts(img, 5)
-    #print(randomPts)
-
-    # topKps = getKps(img, 5, 0.05)
-    # print(topKps)
-
-    # print(responses[10,10])
     
+    # For testing, build the sample image from each of the response indices
     for i in range(responses.shape[2]):
         filtered_image = np.zeros((img.shape[0], img.shape[1]))
         filtered_image = filtered_image.astype(np.uint8) 
@@ -59,17 +48,5 @@ if __name__ == "__main__":
                 filtered_image[x,y] = responses[x,y, i]
         cv2.imshow(str(i),filtered_image)
         cv2.waitKey(0)
-
-    #     cv2.destroyAllWindows()
-    # cv2.imshow('1',responses[0])
-    # cv2.imshow('2',responses[20])
-    # cv2.imshow('3',responses[40])
-
-    #cv2.imshow("merged", cv2.merge([responses[0], responses[20], responses[40]]))
-
-    # cv2.waitKey(0)
-
-    # cv2.destroyAllWindows()
-
-
+        cv2.destroyAllWindows()
 

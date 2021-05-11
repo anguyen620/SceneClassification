@@ -25,7 +25,17 @@ def get_random_points(img, alpha):
 
 
 # start of some code for testing get_random_points()
-if __name__ == "__main__":
-    img = cv2.imread ("../data/bedroom/sun_aiydcpbgjhphuafw.jpg")
-    print (get_random_points (img, 50))
+if __name__ == '__main__':
+    a = 500
+
+    img = cv2.imread("../data/campus/sun_abslhphpiejdjmpz.jpg")
+    points = get_random_points (img, a)
+    
+    # map on image points
+    for coords in points:
+        img = cv2.circle(img, (coords[0], coords[1]), radius=2, color=(255, 0, 0), thickness=-1)
+
+    cv2.imshow(str(a)+" Random points", img)
+    cv2.waitKey(0)
+    cv2. destroyAllWindows()
 
