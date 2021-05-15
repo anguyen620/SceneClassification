@@ -4,7 +4,6 @@ import numpy as np
 
 def get_image_distance(hist1, hist2, method):
     if method == "euclidean":
-        # dist = cdist(hist1, hist2, method)
         dist = np.linalg.norm(hist1 - hist2)
     elif method == "chi2":
         dist = chi2dist(hist1, hist2)

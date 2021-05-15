@@ -11,8 +11,7 @@ def get_harris_points(img, alpha, k=0.04):
     # -----fill in your implementation here --------
 
     # Get keypoints
-    gray = np.float32(img)
-    kps = cv2.cornerHarris(gray, 2, 5, k)
+    kps = cv2.cornerHarris(img, 2, 5, k)
 
     # Make value array, which consists of [val, x, y]
     valueArr = []
@@ -20,13 +19,13 @@ def get_harris_points(img, alpha, k=0.04):
         for col in range(kps.shape[1]):
             valueArr.append([kps[row][col], row, col])
 
-    # Shitty code
+    # Sort by values and take top a
     sortedValues = sorted(valueArr, key = lambda x: x[0], reverse = True) # Sort the keypoints in descending order
     sortedValues = [elems[1:] for elems in sortedValues]
     points = sortedValues[:alpha]
 
     # ----------------------------------------------
-    
+
     return points
 
 
@@ -39,7 +38,7 @@ if __name__ == '__main__':
     
     # map on image points
     for coords in points:
-        img = cv2.circle(img, (coords[0], coords[1]), radius=2, color=(255, 0, 0), thickness=-1)
+        img = cv2.circle(img, (coords[1], coords[0]), radius=2, color=(255, 0, 0), thickness=-1)
 
     cv2.imshow(str(a)+" Harris points", img)
     cv2.waitKey(0)
