@@ -33,7 +33,7 @@ if __name__ == '__main__':
     
     # map on image points
     for coords in points:
-        img = cv2.circle(img, (coords[0], coords[1]), radius=2, color=(255, 0, 0), thickness=-1)
+        img = cv2.circle(img, (coords[1], coords[0]), radius=2, color=(255, 0, 0), thickness=-1)
 
     cv2.imshow(str(a)+" Random points", img)
     cv2.waitKey(0)

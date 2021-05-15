@@ -13,9 +13,12 @@ def get_visual_words (img, dictionary, filterBank):
     wordMap = np.zeros ((img.shape[0], img.shape[1]))
     filterResponses = extract_filter_responses(img, filterBank)
 
+    # Filter response 1-D elements must be made 2-D for cdist to work
+    reshapeSize = len(filterBank)*3
+
     for x in range(img.shape[0]):
         for y in range(img.shape[1]):
-            distances = cdist(dictionary, filterResponses[x][y].reshape(1,60))
+            distances = cdist(dictionary, filterResponses[x][y].reshape(1,reshapeSize))
             wordMap[x, y] = np.argmin(distances)
 
     # ----------------------------------------------
@@ -24,7 +27,7 @@ def get_visual_words (img, dictionary, filterBank):
 
 #Test
 if __name__ == '__main__':
-    img = cv2.imread('../data/airport/sun_aesovualhburmfhn.jpg')
+    img = cv2.imread('../data/bedroom/sun_aaprepyzloaivblt.jpg')
     rand_dict = pickle.load(open( "dictionaryRandom.pkl", "rb" ))
     harris_dict = pickle.load(open( "dictionaryHarris.pkl", "rb" ))
     filterBank = create_filterbank()
@@ -39,8 +42,8 @@ if __name__ == '__main__':
 
     visualize_random = cv2.cvtColor(np.float32(visualize_random), cv2.COLOR_RGB2BGR)
     visualize_harris = cv2.cvtColor(np.float32(visualize_harris), cv2.COLOR_RGB2BGR)
-    cv2.imshow(str("Random Word Map in BGR?"), visualize_random)
-    cv2.imshow(str("Harris Word Mapp in BGR?"), visualize_harris)
+    cv2.imshow(str("Sample from Random dictionary in BGR"), visualize_random)
+    cv2.imshow(str("Sample from Harris dictionary in BGR"), visualize_harris)
 
     cv2.waitKey(0)
     cv2. destroyAllWindows()
